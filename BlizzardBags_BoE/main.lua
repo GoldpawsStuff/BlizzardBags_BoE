@@ -166,8 +166,11 @@ local Update = function(self, bag, slot)
 		end
 		container.bind:SetText(message)
 
-	elseif (Cache[self]) then
-		Cache[self].bind:SetText("")
+	else
+		local cache = Cache[self]
+		if (cache and cache.bind) then
+			cache.bind:SetText("")
+		end
 	end
 
 end
@@ -182,8 +185,9 @@ local UpdateContainer = function(self)
 		if (button.hasItem) then
 			Update(button, bag, button:GetID())
 		else
-			if (Cache[button]) then
-				Cache[button].bind:SetText("")
+			local cache = Cache[button]
+			if (cache and cache.bind) then
+				cache.bind:SetText("")
 			end
 		end
 		id = id + 1
@@ -203,8 +207,9 @@ local UpdateBank = function()
 			if (button.hasItem) then
 				Update(button, bag, button:GetID())
 			else
-				if (Cache[button]) then
-					Cache[button].bind:SetText("")
+				local cache = Cache[button]
+				if (cache and cache.bind) then
+					cache.bind:SetText("")
 				end
 			end
 		end
