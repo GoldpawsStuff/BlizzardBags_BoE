@@ -145,11 +145,13 @@ local Update = function(self, bag, slot)
 			container.bind:SetFontObject(NumberFont_Outline_Med or NumberFontNormal)
 			container.bind:SetShadowOffset(1, -1)
 			container.bind:SetShadowColor(0, 0, 0, .5)
-			local UpgradeIcon = self.UpgradeIcon
-			if (UpgradeIcon) then
-				UpgradeIcon:ClearAllPoints()
-				UpgradeIcon:SetPoint("BOTTOMRIGHT", 2, 0)
-			end
+		end
+
+		-- Move conflicting upgrade icons
+		local upgrade = self.UpgradeIcon
+		if (upgrade) then
+			upgrade:ClearAllPoints()
+			upgrade:SetPoint("BOTTOMRIGHT", 2, 0)
 		end
 
 		-- Colorize.
