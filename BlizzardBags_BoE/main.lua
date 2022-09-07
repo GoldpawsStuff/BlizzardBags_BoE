@@ -197,8 +197,6 @@ local UpdateContainer = function(self)
 	end
 end
 
-
-
 -- Parse the main bankframe
 local UpdateBank = function()
 	local BankSlotsFrame = BankSlotsFrame
@@ -218,6 +216,19 @@ local UpdateBank = function()
 	end
 end
 
+-- Update a single bank button, needed for classics
+local UpdateBankButton = function(self)
+	if (self and not self.isBag) then
+		-- Always run a full update here,
+		-- as the .hasItem flag might not have been set yet.
+		Update(self, BankSlotsFrame:GetID(), self:GetID())
+	else
+		local cache = Cache[button]
+		if (cache and cache.bind) then
+			cache.bind:SetText("")
+		end
+	end
+end
 
 -- Addon Core
 -----------------------------------------------------------
@@ -280,7 +291,18 @@ Private.OnEnable = function(self)
 
 	else
 		hooksecurefunc("ContainerFrame_Update", UpdateContainer)
-		hooksecurefunc("BankFrame_UpdateItems", UpdateBank)
+
+		-- Retail
+		if (BankFrame_UpdateItems) then
+			hooksecurefunc("BankFrame_UpdateItems", UpdateBank)
+
+		-- Classics
+		elseif (BankFrameItemButton_UpdateLocked) then
+			-- This is called from within BankFrameItemButton_Update,
+			-- and thus works as an update for both.
+			hooksecurefunc("BankFrameItemButton_UpdateLocked", UpdateBankButton)
+		end
+
 		self:RegisterEvent("PLAYERBANKSLOTS_CHANGED") -- for single item changes
 	end
 end
