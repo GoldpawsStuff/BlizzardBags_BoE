@@ -121,7 +121,7 @@ local Update = function(self, bag, slot)
 			if (showStatus) then
 				message = (bindType == 3) and L["BoU"] or L["BoE"]
 				rarity = itemQuality
-				mult = (itemRarity ~= 3 and itemRarity ~= 4) and 2/3
+				mult = (itemRarity ~= 3 and itemRarity ~= 4) and 4/5
 			end
 		end
 	end
