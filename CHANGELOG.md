@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.7-Release] 2022-10-06
+### Fixed
+- Fixed a bug showing already soulbound items as BoE in Wrath.
+
 ## [1.0.6-Release] 2022-09-28
 - Added Dragonflight support.
 

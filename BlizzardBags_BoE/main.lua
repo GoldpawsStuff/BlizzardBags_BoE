@@ -97,7 +97,7 @@ local Update = function(self, bag, slot)
 
 			-- GetContainerItemInfo isn't returning 'isBound' in the classics,
 			-- so we need to scan the tooltip the old way here.
-			if (showStatus) and (Private.IsClassic or Private.IsBCC or Private.IsWotLK) then
+			if (showStatus) and (Private.IsClassic or Private.IsBCC or Private.IsWrath) then
 				Scanner.owner = self
 				Scanner.bag = bag
 				Scanner.slot = slot
