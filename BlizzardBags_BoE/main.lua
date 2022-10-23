@@ -41,6 +41,9 @@ local S_ITEM_BOUND1 = ITEM_SOULBOUND
 local S_ITEM_BOUND2 = ITEM_ACCOUNTBOUND
 local S_ITEM_BOUND3 = ITEM_BNETACCOUNTBOUND
 
+-- WoW10 API
+local C_Container_GetContainerItemInfo = C_Container and C_Container.GetContainerItemInfo
+
 -- WoW Objects
 local CFSM = ContainerFrameSettingsManager -- >= 10.0.0
 local CFCB = ContainerFrameCombinedBags -- >= 10.0.0
@@ -79,10 +82,17 @@ local colors = {
 -----------------------------------------------------------
 -- Update an itembutton's bind status
 local Update = function(self, bag, slot)
-	local message, rarity, mult
+	local message, rarity, mult, itemLink, isBound, _
 	local r, g, b = 240/255, 240/255, 240/255
-	local _, _, _, _, _, _, itemLink, _, _, _, isBound = GetContainerItemInfo(bag, slot)
-
+	if (C_Container_GetContainerItemInfo) then
+		local containerInfo = C_Container_GetContainerItemInfo(bag,slot)
+		if (containerInfo) then
+			isBound = containerInfo.isBound
+			itemLink = containerInfo.hyperlink
+		end
+	else
+		_, _, _, _, _, _, itemLink, _, _, _, isBound = GetContainerItemInfo(bag, slot)
+	end
 	if (itemLink) then
 		local _, _, itemQuality, _, _, _, _, _, _, _, _, _, _, bindType = GetItemInfo(itemLink)
 
@@ -97,7 +107,7 @@ local Update = function(self, bag, slot)
 
 			-- GetContainerItemInfo isn't returning 'isBound' in the classics,
 			-- so we need to scan the tooltip the old way here.
-			if (showStatus) and (Private.IsClassic or Private.IsBCC or Private.IsWrath) then
+			if (showStatus) and (Private.IsClassic or Private.IsTBC or Private.IsWrath) then
 				Scanner.owner = self
 				Scanner.bag = bag
 				Scanner.slot = slot
@@ -344,14 +354,13 @@ end
 	local MAJOR,MINOR,PATCH = string.split(".", currentClientPatch)
 	MAJOR = tonumber(MAJOR)
 
-	Private.Version = version
-	Private.ClientMajor = MAJOR
-	Private.IsDragonflight = MAJOR == 10
+	-- WoW Client versions
+	local patch, build, date, version = GetBuildInfo()
 	Private.IsRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 	Private.IsClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-	Private.IsBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+	Private.IsTBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 	Private.IsWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-	Private.CurrentClientBuild = currentClientBuild
+	Private.WoW10 = version >= 100000
 
 	-- Should mostly be used for debugging
 	Private.Print = function(self, ...)
