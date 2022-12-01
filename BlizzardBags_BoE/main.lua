@@ -271,11 +271,6 @@ Private.OnEvent = function(self, event, ...)
 	end
 end
 
--- Initialization.
--- This fires when the addon and its settings are loaded.
-Private.OnInit = function(self)
-end
-
 -- Enabling.
 -- This fires when most of the user interface has been loaded
 -- and most data is available to the user.
