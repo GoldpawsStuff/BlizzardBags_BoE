@@ -204,7 +204,7 @@ local UpdateContainer = function(self)
 end
 
 -- Parse combined container
-UpdateCombinedContainer = function(self)
+local UpdateCombinedContainer = function(self)
 	for id,button in self:EnumerateItems() do
 		if (button.hasItem) then
 			-- The buttons retain their original bagID
