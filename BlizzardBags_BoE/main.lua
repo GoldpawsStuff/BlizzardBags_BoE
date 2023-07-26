@@ -28,6 +28,7 @@ local Addon, Private = ...
 
 -- Lua API
 local _G = _G
+local ipairs = ipairs
 local string_find = string.find
 local tonumber = tonumber
 
@@ -205,14 +206,28 @@ end
 
 -- Parse combined container
 local UpdateCombinedContainer = function(self)
-	for id,button in self:EnumerateItems() do
-		if (button.hasItem) then
-			-- The buttons retain their original bagID
-			Update(button, button:GetBagID(), button:GetID())
-		else
-			local cache = Cache[button]
-			if (cache and cache.bind) then
-				cache.bind:SetText("")
+	if (self.EnumerateValidItems) then
+		for id,button in self:EnumerateValidItems() do
+			if (button.hasItem) then
+				-- The buttons retain their original bagID
+				Update(button, button:GetBagID(), button:GetID())
+			else
+				local cache = Cache[button]
+				if (cache and cache.bind) then
+					cache.bind:SetText("")
+				end
+			end
+		end
+	elseif (self.Items) then
+		for id,button in ipairs(self.Items) do
+			if (button.hasItem) then
+				-- The buttons retain their original bagID
+				Update(button, button:GetBagID(), button:GetID())
+			else
+				local cache = Cache[button]
+				if (cache and cache.bind) then
+					cache.bind:SetText("")
+				end
 			end
 		end
 	end
