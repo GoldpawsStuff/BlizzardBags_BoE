@@ -1,6 +1,11 @@
 package-as: BlizzardBags_BoE
 enable-nolib-creation: no
 
+externals:
+    Libs/TaintLess:
+        url: https://www.townlong-yak.com/addons.git/taintless
+        commit: default
+
 move-folders:
     BlizzardBags_BoE/BlizzardBags_BoE: BlizzardBags_BoE
 
