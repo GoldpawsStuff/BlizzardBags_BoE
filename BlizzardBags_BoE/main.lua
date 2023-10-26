@@ -93,7 +93,8 @@ local Update = function(self, bag, slot)
 	if (itemLink) then
 		local _, _, itemQuality, _, _, _, _, _, _, _, _, _, _, bindType = GetItemInfo(itemLink)
 
-		if (itemQuality and itemQuality > 1) and (bindType == 2 or bindType == 3) then
+		-- *in retail, all items can bind now thanks to transmogs
+		if (itemQuality and ((Private.IsRetail and itemQuality >= 0) or itemQuality > 1)) and (bindType == 2 or bindType == 3) then
 
 			-- If the item is bound,
 			-- the bind type is irrelevant.
